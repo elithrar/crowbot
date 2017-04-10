@@ -1,0 +1,42 @@
+{
+    "name": "crowbot",
+    "version": "0.0.1",
+    "description": "A Discord bot that returns the current & upcoming Crowfall playtest dates.",
+    "main": "src/index.js",
+    "repository": "https://github.com/elithrar/crowcal.js",
+    "author": "Matt Silverlock",
+    "license": "BSD-3-Clause",
+    "scripts": {
+        "postinstall": "yarn build",
+        "build": "node_modules/typescript/bin/tsc",
+        "reload": "yarn build && yarn start",
+        "watch": "reflex -g 'src/*.ts' -s yarn reload",
+        "test": "mocha -r ts-node/register src/test/*.ts",
+        "start": "node build/index.js"
+    },
+    "engines": {
+        "node": "7.x"
+    },
+    "dependencies": {
+        "@types/node": "^7.0.13",
+        "@types/request-promise": "^4.1.33",
+        "bluebird": "^3.5.0",
+        "commander": "^2.9.0",
+        "discord.js": "^11.0.0",
+        "erlpack": "hammerandchisel/erlpack",
+        "moment": "^2.18.1",
+        "request": "^2.81.0",
+        "request-promise": "^4.2.0"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.40",
+        "mocha": "^3.2.0",
+        "nodemon": "^1.11.0",
+        "ts-node": "^3.0.2",
+        "typescript": "^2.2.2"
+    },
+    "peerDependencies": {
+        "erlpack": "hammerandchisel/erlpack",
+        "uws": "^0.14.1"
+    }
+}

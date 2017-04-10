@@ -1,0 +1,12 @@
+{
+  "name": "crowbot",
+  "description": "A Discord bot that returns the current & upcoming Crowfall playtest dates.",
+  "repository": "https://github.com/elithrar/crowcal-bot",
+  "logo": "",
+  "keywords": [
+    "node",
+    "discord",
+    "bot",
+    "crowfall"
+  ]
+}

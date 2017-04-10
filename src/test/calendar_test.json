@@ -1,0 +1,162 @@
+{
+ "kind": "calendar#events",
+ "etag": "\"p32k83eumgmdd60g\"",
+ "summary": "Crowfall Playtest",
+ "updated": "2017-04-10T13:57:23.961Z",
+ "timeZone": "America/Chicago",
+ "accessRole": "reader",
+ "defaultReminders": [],
+ "nextSyncToken": "CKiBu9aFmtMCEKiBu9aFmtMCGAE=",
+ "items": [
+  {
+   "kind": "calendar#event",
+   "etag": "\"2980092950574000\"",
+   "id": "05mk5lcg7v1cpof5klic41m39o",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=MDVtazVsY2c3djFjcG9mNWtsaWM0MW0zOW8gbDNyYzFmMjhkNG9ocmw2b3RkbDZkY3Mxdm9AZw&ctz=America/Los_Angeles",
+   "created": "2017-03-20T21:41:19.000Z",
+   "updated": "2017-03-20T21:47:55.287Z",
+   "summary": "Crowfall Playtest - all servers",
+   "creator": {
+    "email": "gordon@artandcraftentertainment.com",
+    "displayName": "Gordon Walton"
+   },
+   "organizer": {
+    "email": "l3rc1f28d4ohrl6otdl6dcs1vo@group.calendar.google.com",
+    "displayName": "Crowfall Playtest",
+    "self": true
+   },
+   "start": {
+    "dateTime": "2017-04-10T17:00:00-06:00"
+   },
+   "end": {
+    "dateTime": "2017-04-10T23:30:00-06:00"
+   },
+   "iCalUID": "05mk5lcg7v1cpof5klic41m39o@google.com",
+   "sequence": 1,
+   "reminders": {
+    "useDefault": true
+   }
+  },
+  {
+   "kind": "calendar#event",
+   "etag": "\"2980989886000000\"",
+   "id": "ub685928tfj26g0q6ftdjsca2o",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=dWI2ODU5Mjh0ZmoyNmcwcTZmdGRqc2NhMm8gbDNyYzFmMjhkNG9ocmw2b3RkbDZkY3Mxdm9AZw&ctz=America/Los_Angeles",
+   "created": "2017-03-26T02:22:22.000Z",
+   "updated": "2017-03-26T02:22:23.000Z",
+   "summary": "Crowfall Snap Test, limited Servers ",
+   "creator": {
+    "email": "gordon@artandcraftentertainment.com",
+    "displayName": "Gordon Walton"
+   },
+   "organizer": {
+    "email": "l3rc1f28d4ohrl6otdl6dcs1vo@group.calendar.google.com",
+    "displayName": "Crowfall Playtest",
+    "self": true
+   },
+   "start": {
+    "dateTime": "2017-03-25T10:30:00-07:00"
+   },
+   "end": {
+    "dateTime": "2017-03-27T07:00:00-07:00"
+   },
+   "iCalUID": "ub685928tfj26g0q6ftdjsca2o@google.com",
+   "sequence": 0,
+   "reminders": {
+    "useDefault": true
+   }
+  },
+  {
+   "kind": "calendar#event",
+   "etag": "\"2982571933482000\"",
+   "id": "gavioegf9bjoai4bmmfhuevj8o",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=Z2F2aW9lZ2Y5YmpvYWk0Ym1tZmh1ZXZqOG8gbDNyYzFmMjhkNG9ocmw2b3RkbDZkY3Mxdm9AZw&ctz=America/Los_Angeles",
+   "created": "2017-04-04T06:06:06.000Z",
+   "updated": "2017-04-04T06:06:06.741Z",
+   "summary": "Crowfall Playtest - all active servers",
+   "creator": {
+    "email": "gordon@artandcraftentertainment.com",
+    "displayName": "Gordon Walton"
+   },
+   "organizer": {
+    "email": "l3rc1f28d4ohrl6otdl6dcs1vo@group.calendar.google.com",
+    "displayName": "Crowfall Playtest",
+    "self": true
+   },
+   "start": {
+    "dateTime": "2017-04-07T15:00:00-07:00"
+   },
+   "end": {
+    "dateTime": "2017-04-10T19:30:00-07:00"
+   },
+   "iCalUID": "gavioegf9bjoai4bmmfhuevj8o@google.com",
+   "sequence": 0,
+   "reminders": {
+    "useDefault": true
+   }
+  },
+  {
+   "kind": "calendar#event",
+   "etag": "\"2983665195748000\"",
+   "id": "gruk8rssr4p3knq157t3hchdh0",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=Z3J1azhyc3NyNHAza25xMTU3dDNoY2hkaDAgbDNyYzFmMjhkNG9ocmw2b3RkbDZkY3Mxdm9AZw&ctz=America/Los_Angeles",
+   "created": "2017-04-10T13:56:37.000Z",
+   "updated": "2017-04-10T13:56:37.874Z",
+   "summary": "Crowfall Playtest - all available servers",
+   "creator": {
+    "email": "gordon@artandcraftentertainment.com",
+    "displayName": "Gordon Walton"
+   },
+   "organizer": {
+    "email": "l3rc1f28d4ohrl6otdl6dcs1vo@group.calendar.google.com",
+    "displayName": "Crowfall Playtest",
+    "self": true
+   },
+   "start": {
+    "dateTime": "2017-04-14T15:00:00-07:00"
+   },
+   "end": {
+    "dateTime": "2017-04-17T20:30:00-07:00"
+   },
+   "iCalUID": "gruk8rssr4p3knq157t3hchdh0@google.com",
+   "sequence": 0,
+   "reminders": {
+    "useDefault": true
+   }
+  },
+  {
+   "kind": "calendar#event",
+   "etag": "\"2983665287680000\"",
+   "id": "hqk5r58f350mobhi11ndejsr50",
+   "status": "confirmed",
+   "htmlLink": "https://www.google.com/calendar/event?eid=aHFrNXI1OGYzNTBtb2JoaTExbmRlanNyNTAgbDNyYzFmMjhkNG9ocmw2b3RkbDZkY3Mxdm9AZw&ctz=America/Los_Angeles",
+   "created": "2017-04-10T13:57:23.000Z",
+   "updated": "2017-04-10T13:57:23.840Z",
+   "summary": "Crowfall Playtest - all available servers",
+   "creator": {
+    "email": "gordon@artandcraftentertainment.com",
+    "displayName": "Gordon Walton"
+   },
+   "organizer": {
+    "email": "l3rc1f28d4ohrl6otdl6dcs1vo@group.calendar.google.com",
+    "displayName": "Crowfall Playtest",
+    "self": true
+   },
+   "start": {
+    "dateTime": "2017-04-21T15:00:00-07:00"
+   },
+   "end": {
+    "dateTime": "2017-04-24T20:30:00-07:00"
+   },
+   "iCalUID": "hqk5r58f350mobhi11ndejsr50@google.com",
+   "sequence": 0,
+   "reminders": {
+    "useDefault": true
+   }
+  }
+ ]
+}
