@@ -1,5 +1,9 @@
 import * as Discord from "discord.js"
 import * as moment from "moment"
+import * as rp from "request-promise"
+import * as Bluebird from "bluebird"
+
+global.Promise = Bluebird
 
 /**
  *  EventBot provides a Google Calendar fetching Discord bot.
@@ -14,9 +18,13 @@ export class EventBot {
   botName: string
   protected client: Discord.Client // An instance of Discord.js's client.
   config: BotConfig
-  private daysAhead: number // how far ahead (in days) to fetch events to
-  private permissions: Discord.PermissionResolvable[]
-  private prefix: string
+  protected daysAhead: number // how far ahead (in days) to fetch events to
+  protected permissions: Discord.PermissionResolvable[]
+  protected prefix: string
+  protected cache: { "lastFetched": number, "events": any[] } = {
+    lastFetched: 0,
+    events: []
+  }
 
   constructor(botName: string, actions: ActionMap, config: BotConfig) {
     this.config = config
@@ -70,23 +78,23 @@ export class EventBot {
           console.log(`${this.botName} encounted an error when starting: ${err}`)
         })
     })
-    .on("reconnecting", () => {
-      console.log(`${this.botName} is reconnecting...`)
-    })
-    .on("warning", (warning) => {
-      console.warn(`warning: ${warning}`)
-    })
-    .on("error", (err) => {
-      console.error(`error: ${err}`)
-    })
-    // Parse incoming messages for our command prefix and execute their actions.
-    .on("message", message => {
-      if (this.config.debug) {
-        console.log(`debug: received message: ${message.content}`)
-      }
+      .on("reconnecting", () => {
+        console.log(`${this.botName} is reconnecting...`)
+      })
+      .on("warning", (warning) => {
+        console.warn(`warning: ${warning}`)
+      })
+      .on("error", (err) => {
+        console.error(`error: ${err}`)
+      })
+      // Parse incoming messages for our command prefix and execute their actions.
+      .on("message", message => {
+        if (this.config.debug) {
+          console.log(`debug: received message: ${message.content}`)
+        }
 
-      this.onMessage(message)
-    })
+        this.onMessage(message)
+      })
 
     return this.client.login(this.config.token)
       .catch(err => {
@@ -147,6 +155,37 @@ export class EventBot {
     let url = `https://www.googleapis.com/calendar/v3/calendars/${this.config.calendarID}@group.calendar.google.com/events?key=${this.config.googleAPIKey}&timeMin=${timeMin}&timeMax=${timeMax}&sanitizeHtml=true`
 
     return url
+  }
+
+  getEvents(url: string, options: any): Bluebird<any> {
+    let maxAge = 600
+    let now = Date.now()
+    let cache = this.cache
+
+    // Return events from the cache when possible.
+    if (now - maxAge < cache.lastFetched || cache.events.length !== 0) {
+      return new Bluebird((resolve) => {
+        resolve(cache.events)
+      })
+    }
+
+    return rp.get({
+      uri: url,
+      json: true
+    })
+      .then(body => {
+        if (body.items === undefined) {
+          throw new Error("event data not present in response")
+        }
+
+        cache.lastFetched = now
+        cache.events = body
+
+        return body
+      })
+      .catch((err) => {
+        console.log(`error fetching events: ${err}`)
+      })
   }
 }
 

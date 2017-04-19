@@ -1,5 +1,4 @@
 import * as moment from "moment"
-import getEvents from "./fetch"
 import { EventBot } from "./bot"
 import *  as Discord from "discord.js"
 import { ActionMap, Action } from "./bot"
@@ -55,7 +54,7 @@ function sendMessage(message: Discord.Message, text: string) {
  * @param {string} command
  */
 function listUpcomingEvents(bot: EventBot, message: Discord.Message) {
-  getEvents(bot.getCalendarURL(), {})
+  bot.getEvents(bot.getCalendarURL(), {})
     .then((events) => {
       let results = ["\n"]
 
@@ -90,7 +89,7 @@ function listUpcomingEvents(bot: EventBot, message: Discord.Message) {
  * @param {string} command
  */
 function listCurrentEvents(bot: EventBot, message: Discord.Message) {
-  getEvents(bot.getCalendarURL(), {})
+  bot.getEvents(bot.getCalendarURL(), {})
     .then((events) => {
       let results = ["\n"]
 
@@ -126,23 +125,21 @@ function listCurrentEvents(bot: EventBot, message: Discord.Message) {
  * @param {string} command
  */
 function showHelpText(bot: EventBot, message: Discord.Message) {
-  let preface = `
-Hi, I'm ${bot.botName}!
-
-Available commands:
-`
-
-  let resp: string[] = [preface]
+  let cmds: string[] = []
 
   actions.forEach((value, key) => {
-    resp.push(`**${key}**: ${value.description}`)
+    cmds.push(`**${key}**: ${value.description}`)
   })
 
-  resp.push(`
-My source code lives at https://github.com/elithrar/crowbot (ask here for help or feature requests)
-`)
+  let resp = `
+Hi, I'm ${bot.botName}!
 
-  sendMessage(message, resp.join("\n"))
+Available commands:\n\n${cmds.join("\n")}
+
+My source code lives here: \`https://github.com/elithrar/crowbot\` (ask there for help or feature requests)
+`
+
+  sendMessage(message, resp)
 }
 
 /**

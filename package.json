@@ -29,6 +29,7 @@
         "request-promise": "^4.2.0"
     },
     "devDependencies": {
+        "@types/bluebird-global": "^3.5.2",
         "@types/mocha": "^2.2.40",
         "mocha": "^3.2.0",
         "nodemon": "^1.11.0",

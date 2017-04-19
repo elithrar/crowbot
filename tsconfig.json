@@ -12,6 +12,9 @@
     "noImplicitReturns": true,
     "noImplicitThis": true
   },
+  "types": [
+    "bluebird-global"
+  ],
   "include": [
     "src/*",
     "src/**/*"
