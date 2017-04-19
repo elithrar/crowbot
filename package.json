@@ -8,11 +8,11 @@
     "license": "BSD-3-Clause",
     "scripts": {
         "postinstall": "yarn build",
-        "build": "node_modules/typescript/bin/tsc",
+        "build": "NPM_CONFIG_PRODUCTION=false node_modules/typescript/bin/tsc",
         "reload": "yarn build && yarn start",
         "watch": "reflex -g 'src/*.ts' -s yarn reload",
         "test": "mocha -r ts-node/register src/test/*.ts",
-        "start": "node build/index.js"
+        "start": "NPM_CONFIG_PRODUCTION=false node build/index.js"
     },
     "engines": {
         "node": "7.x"
