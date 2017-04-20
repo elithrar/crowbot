@@ -21,7 +21,7 @@ describe("create a new EventBot", () => {
     let config: BotConfig = {token: "a", googleAPIKey: "b", clientID: "c", calendarID: "d"}
     let eb = new EventBot("testBot", actions, config)
 
-    assert.equal(eb.botName, "testBot")
+    assert.equal(eb.botPrefix, "testBot")
     assert.equal(eb.actions, actions)
     assert.equal(eb.config, config)
   })

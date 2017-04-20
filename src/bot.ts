@@ -11,11 +11,11 @@ global.Promise = Bluebird
 export class EventBot {
   actions: ActionMap
   /**
-   * botName defines what command prefix will be used to call the bot (e.g. !botName).
+   * botPrefix defines what command botPrefix will be used to call the bot (e.g. !botPrefix).
    * @type {string}
    * @memberOf EventBot
    */
-  botName: string
+  botPrefix: string
   protected client: Discord.Client // An instance of Discord.js's client.
   /**
    * config is an instance of BotConfig (configuration options for the bot).
@@ -25,13 +25,12 @@ export class EventBot {
   config: BotConfig
   protected daysAhead: number // how far ahead (in days) to fetch events to
   protected permissions: Discord.PermissionResolvable[]
-  protected prefix: string
   protected cache: { "lastFetched": number, "events": any[] } = {
     lastFetched: 0,
     events: []
   }
 
-  constructor(botName: string, actions: ActionMap, config: BotConfig) {
+  constructor(botPrefix: string, actions: ActionMap, config: BotConfig) {
     this.config = config
 
     if (this.config.token === "") {
@@ -50,11 +49,9 @@ export class EventBot {
       throw new Error("config.calendarID must not be empty")
     }
 
-    this.botName = botName
-    this.prefix = `!${this.botName}`
+    this.botPrefix = `!${botPrefix}`
 
     this.client = new Discord.Client()
-    this.client.token = this.config.token
     if (this.config.clientOptions) {
       this.client.options = this.config.clientOptions
     }
@@ -77,14 +74,14 @@ export class EventBot {
     this.client.on("ready", () => {
       this.generateInvite()
         .then((link) => {
-          console.log(`⚡️ add ${this.botName} to your Discord server: ${link}`)
-          console.log(`🤖 ${this.botName} is ready for battle.`)
+          console.log(`⚡️ add ${this.botPrefix} to your Discord server: ${link}`)
+          console.log(`🤖 ${this.botPrefix} is ready for battle.`)
         }).catch((err) => {
-          console.log(`${this.botName} encounted an error when starting: ${err}`)
+          console.log(`${this.botPrefix} encounted an error when starting: ${err}`)
         })
     })
       .on("reconnecting", () => {
-        console.log(`${this.botName} is reconnecting...`)
+        console.log(`${this.botPrefix} is reconnecting...`)
       })
       .on("warning", (warning) => {
         console.warn(`warning: ${warning}`)
@@ -92,7 +89,7 @@ export class EventBot {
       .on("error", (err) => {
         console.error(`error: ${err}`)
       })
-      // Parse incoming messages for our command prefix and execute their actions.
+      // Parse incoming messages for our command botPrefix and execute their actions.
       .on("message", message => {
         if (this.config.debug) {
           console.log(`debug: received message: ${message.content}`)
@@ -118,16 +115,39 @@ export class EventBot {
   }
 
   /**
+   * hasBotPrefix returns true if the message has the bots' prefix.
+   * @param {Discord.Message} message
+   * @returns {boolean}
+   * @memberOf EventBot
+   */
+  hasBotPrefix(message: Discord.Message): boolean {
+    return message.content.startsWith(`${this.botPrefix}`)
+  }
+
+  /**
+   * isBotMentioned returns true if the bot was mentioned. If multiple users
+   * were mentioned, or @everyone was mentioned, this returns false.
+   * @param {Discord.Message} message
+   * @returns {boolean}
+   * @memberOf EventBot
+   */
+  isBotMentioned(message: Discord.Message): boolean {
+    return (message.isMentioned(this.client.user.id) && !message.mentions.everyone && message.mentions.users.size === 1)
+  }
+
+  /**
    * onMessage accepts Messages emitted by the Discord client and processes it.
    * @param {Discord.Message} message
    * @memberOf EventBot
    */
   onMessage(message: Discord.Message): void {
-    if (message.content.startsWith(`${this.prefix}`)) {
-      let command = message.content.replace(`${this.prefix} `, "")
+    if (this.isBotMentioned(message) || this.hasBotPrefix(message)) {
+      let command = message.content.replace(`${this.botPrefix} `, "")
+      command = command.replace(/^<@\d+> /, "")
       console.log(`received command: ${command} (guild: ${message.guild.id})`)
 
-      // TODO(matt): this.botActions.actions.get("")
+      // TODO(matt): Consider refactoring the Action interface used here; build
+      // it from an object to support aliases.
       let action = this.actions.get(command)
       if (action) {
         action.action(this, message)
@@ -200,19 +220,20 @@ export class EventBot {
  * @interface BotConfig
  */
 export interface BotConfig {
-  // The Discord bot (secret) token to authenticate as
+  /** The Discord bot (secret) token to authenticate as */
   token: string
-  // The Discord app (public) client ID for the 'add bot' URL
+  /** The Discord app (public) client ID for the 'add bot' URL */
   clientID: string
-  // The Google (secret) API key from console.developers.google.com
+  /** The Google (secret) API key from console.developers.google.com */
   googleAPIKey: string
-  // The Google calendar ID to fetch
+  /** The Google calendar ID to fetch */
   calendarID: string
-  // An instance of Discord.ClientOptions
+  /** An instance of Discord.ClientOptions */
   clientOptions?: Discord.ClientOptions
-  gitHubLink?: string
+  /** Debug mode (verbose logging of messages) */
   debug?: boolean
-  // TODO(matt): Allow a customizable readyMessage? addBotMessage?
+  /** Allow the bot to respond to direct mentions, without a botPrefix */
+  allowMentions?: boolean
 }
 
 /**

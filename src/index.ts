@@ -22,7 +22,6 @@ function main() {
       googleAPIKey: program.googleApiKey,
       // The Crowfall playtest calendar ID.
       calendarID: "l3rc1f28d4ohrl6otdl6dcs1vo",
-      gitHubLink: "https://github.com/elithrar/crowbot",
       debug: program.debug
     }
   )

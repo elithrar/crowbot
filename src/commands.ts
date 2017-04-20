@@ -61,6 +61,8 @@ function listUpcomingEvents(bot: EventBot, message: Discord.Message) {
       events.items.forEach((item) => {
         let now = Date.now()
 
+        // TODO(matt): This should just be one function: list events.
+        // Break out the "current" events from the upcoming events.
         if (now <= Date.parse(item.end.dateTime)) {
           // TODO(matt): re-use this for both listUpcomingEvents & listCurrentEvents.
           let start = convertEventDate(item.start.dateTime, message.createdAt)
@@ -138,7 +140,7 @@ function showHelpText(bot: EventBot, message: Discord.Message) {
   })
 
   let resp = `
-Hi, I'm ${bot.botName}!
+Hi, I'm ${bot.botPrefix}!
 
 Available commands:\n\n${cmds.join("\n")}
 
