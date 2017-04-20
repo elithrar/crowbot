@@ -12,15 +12,7 @@ actions.set(
   "playtests",
   {
     description: "Returns the current & upcoming Crowfall playtest schedule",
-    action: listUpcomingEvents
-  }
-)
-
-actions.set(
-  "playtests now",
-  {
-    description: "Is there a playtest running now?",
-    action: listCurrentEvents
+    action: listEvents
   }
 )
 
@@ -48,12 +40,11 @@ function sendMessage(message: Discord.Message, text: string) {
 /* Action functions */
 
 /**
-// listUpcomingEvents lists any current or upcoming playtest events.
- *
+// listEvents lists any current or upcoming playtest events.
  * @param {Discord.Message} message
  * @param {string} command
  */
-function listUpcomingEvents(bot: EventBot, message: Discord.Message) {
+function listEvents(bot: EventBot, message: Discord.Message) {
   bot.getEvents(bot.getCalendarURL(), {})
     .then((events) => {
       let results = ["\n"]
@@ -61,69 +52,33 @@ function listUpcomingEvents(bot: EventBot, message: Discord.Message) {
       events.items.forEach((item) => {
         let now = Date.now()
 
-        // TODO(matt): This should just be one function: list events.
-        // Break out the "current" events from the upcoming events.
         if (now <= Date.parse(item.end.dateTime)) {
           // TODO(matt): re-use this for both listUpcomingEvents & listCurrentEvents.
           let start = convertEventDate(item.start.dateTime, message.createdAt)
           let end = convertEventDate(item.end.dateTime, message.createdAt)
 
-          results.push(`${start} until ${end} • ${item.summary}`)
+          if (now >= Date.parse(item.start.dateTime)) {
+            // Highlight currently running events.
+            results.push(`⚡️ ${start} until ${end} • ${item.summary}`)
+          } else {
+            results.push(`${start} until ${end} • ${item.summary}`)
+          }
         }
       })
 
       return results
     })
     .then((results) => {
-      if (results.length <= 1) {
-        sendMessage(message, "🚫 - no Crowfall playtests are currently scheduled.")
+      if (results.length < 1) {
+        sendMessage(message, "🚫 no Crowfall playtests are currently running or scheduled.")
         return
       }
 
-      sendMessage(message, `🗓️ - Upcoming Crowfall playtests: ${results.join("\n")}`)
+      sendMessage(message, `🗓️ Crowfall playtests: ${results.join("\n")}`)
     })
     .catch(err => {
-      console.log(`error: failed to send message: ${err} (guild: ${message.guild.id})`)
+      console.error(`error: failed to send message: ${err} (guild: ${message.guild.id})`)
     })
-}
-
-/**
- * listCurrentEvents lists any currently running Crowfall playtests.
- *
- * @param {Discord.Message} message
- * @param {string} command
- */
-function listCurrentEvents(bot: EventBot, message: Discord.Message) {
-  bot.getEvents(bot.getCalendarURL(), {})
-    .then((events) => {
-      let results = ["\n"]
-
-      events.items.forEach((item) => {
-        let now = Date.now()
-
-        if (now >= Date.parse(item.start.dateTime) && now <= Date.parse(item.end.dateTime)) {
-          // TODO(matt): re-use this for both listUpcomingEvents & listCurrentEvents.
-          let start = convertEventDate(item.start.dateTime, message.createdAt)
-          let end = convertEventDate(item.end.dateTime, message.createdAt)
-
-          results.push(`${start} until ${end} • ${item.summary}`)
-        }
-      })
-
-      return results
-    })
-    .then((results) => {
-      if (results.length <= 1) {
-        sendMessage(message, "🚫 - no Crowfall playtests are running right now.")
-        return
-      }
-
-      sendMessage(message, `⚡️ - Currently running Crowfall playtests: ${results.join("\n")}`)
-    })
-    .catch(err => {
-      console.log(`error: failed to send message: ${err} (guild: ${message.guild.id})`)
-    })
-
 }
 
 /**
@@ -140,7 +95,7 @@ function showHelpText(bot: EventBot, message: Discord.Message) {
   })
 
   let resp = `
-Hi, I'm ${bot.botPrefix}!
+Hi, I'm ${bot.botPrefix}.
 
 Available commands:\n\n${cmds.join("\n")}
 
@@ -167,7 +122,7 @@ function convertEventDate(date: Date, target: Date) {
   }
 
   let targetOffset = moment(target).utcOffset()
-  let converted = moment(date).utcOffset(targetOffset).toString()
+  let converted = moment(date).utcOffset(targetOffset).format("ddd MMM Do, h:mmA (Z)")
 
   return converted
 }
