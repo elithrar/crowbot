@@ -53,7 +53,6 @@ function listEvents(bot: EventBot, message: Discord.Message) {
         let now = Date.now()
 
         if (now <= Date.parse(item.end.dateTime)) {
-          // TODO(matt): re-use this for both listUpcomingEvents & listCurrentEvents.
           let start = convertEventDate(item.start.dateTime, message.createdAt)
           let end = convertEventDate(item.end.dateTime, message.createdAt)
 
@@ -108,7 +107,7 @@ My source code lives here: \`https://github.com/elithrar/crowbot\` (ask there fo
 /**
  *  convertEventDate pretty-prints a JavaScript date object, and converts it to the target date's timezone
  *
- * @param {Date} date -the Date to be converted.
+ * @param {Date} date - the Date to be converted.
  * @param {Date} target - the target date (to be used for its timezone)
  * @returns {string} formatted - the formatted date.
  */
@@ -123,6 +122,5 @@ function convertEventDate(date: Date, target: Date) {
 
   let targetOffset = moment(target).utcOffset()
   let converted = moment(date).utcOffset(targetOffset).format("ddd MMM Do, h:mmA (Z)")
-
   return converted
 }
