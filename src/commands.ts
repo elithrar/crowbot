@@ -41,7 +41,7 @@ actions.set(
 function sendMessage(message: Discord.Message, text: string) {
   message.channel.sendMessage(text, { split: true })
     .catch((err) => {
-      console.error(`failed to send message: ${err}`)
+      console.error(`error: failed to send message: ${err}`)
     })
 }
 
@@ -80,6 +80,9 @@ function listUpcomingEvents(bot: EventBot, message: Discord.Message) {
 
       sendMessage(message, `🗓️ - Upcoming Crowfall playtests: ${results.join("\n")}`)
     })
+    .catch(err => {
+      console.log(`error: failed to send message: ${err} (guild: ${message.guild.id})`)
+    })
 }
 
 /**
@@ -114,6 +117,9 @@ function listCurrentEvents(bot: EventBot, message: Discord.Message) {
       }
 
       sendMessage(message, `⚡️ - Currently running Crowfall playtests: ${results.join("\n")}`)
+    })
+    .catch(err => {
+      console.log(`error: failed to send message: ${err} (guild: ${message.guild.id})`)
     })
 
 }

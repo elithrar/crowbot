@@ -18,8 +18,6 @@
         "node": "7.x"
     },
     "dependencies": {
-        "@types/node": "^7.0.13",
-        "@types/request-promise": "^4.1.33",
         "bluebird": "^3.5.0",
         "commander": "^2.9.0",
         "discord.js": "^11.0.0",
@@ -31,13 +29,15 @@
     "devDependencies": {
         "@types/bluebird-global": "^3.5.2",
         "@types/mocha": "^2.2.40",
+        "@types/node": "^7.0.13",
+        "@types/request-promise": "^4.1.33",
         "mocha": "^3.2.0",
         "nodemon": "^1.11.0",
         "ts-node": "^3.0.2",
+        "tslint": "^5.1.0",
         "typescript": "^2.2.2"
     },
     "peerDependencies": {
-        "erlpack": "hammerandchisel/erlpack",
-        "uws": "^0.14.1"
+        "erlpack": "hammerandchisel/erlpack"
     }
 }

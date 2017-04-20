@@ -11,12 +11,17 @@ global.Promise = Bluebird
 export class EventBot {
   actions: ActionMap
   /**
-   * botName defines how the bot will be
+   * botName defines what command prefix will be used to call the bot (e.g. !botName).
    * @type {string}
    * @memberOf EventBot
    */
   botName: string
   protected client: Discord.Client // An instance of Discord.js's client.
+  /**
+   * config is an instance of BotConfig (configuration options for the bot).
+   * @type {BotConfig}
+   * @memberOf EventBot
+   */
   config: BotConfig
   protected daysAhead: number // how far ahead (in days) to fetch events to
   protected permissions: Discord.PermissionResolvable[]
@@ -120,7 +125,7 @@ export class EventBot {
   onMessage(message: Discord.Message): void {
     if (message.content.startsWith(`${this.prefix}`)) {
       let command = message.content.replace(`${this.prefix} `, "")
-      console.log(`received command: ${command}`)
+      console.log(`received command: ${command} (guild: ${message.guild.id})`)
 
       // TODO(matt): this.botActions.actions.get("")
       let action = this.actions.get(command)
