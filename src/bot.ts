@@ -237,6 +237,18 @@ export interface BotConfig {
 }
 
 /**
+ * Command represents a chat command with its associated aliases, description and action (callback).
+ * @export
+ * @interface Command
+ */
+export interface Command {
+  name: string
+  aliases: string[]
+  description: string
+  action: any
+}
+
+/**
  * ActionMap is a mapping of chat commands to their respective description and Action (callback).
  *
  * @export

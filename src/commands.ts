@@ -121,6 +121,6 @@ function convertEventDate(date: Date, target: Date) {
   }
 
   let targetOffset = moment(target).utcOffset()
-  let converted = moment(date).utcOffset(targetOffset).format("ddd MMM Do, h:mmA (Z)")
+  let converted = moment(date).add(targetOffset, "m").format("ddd MMM Do, h:mmA (Z)")
   return converted
 }
