@@ -141,7 +141,7 @@ export class EventBot {
    * @memberOf EventBot
    */
   onMessage(message: Discord.Message): void {
-    if (this.isBotMentioned(message) || this.hasBotPrefix(message)) {
+    if ((this.isBotMentioned(message) && this.config.allowMentions) || this.hasBotPrefix(message)) {
       let command = message.content.replace(`${this.botPrefix} `, "")
       command = command.replace(/^<@\d+> /, "")
       console.log(`received command: ${command} (guild: ${message.guild.id})`)

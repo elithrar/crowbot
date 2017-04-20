@@ -22,7 +22,8 @@ function main() {
       googleAPIKey: program.googleApiKey,
       // The Crowfall playtest calendar ID.
       calendarID: "l3rc1f28d4ohrl6otdl6dcs1vo",
-      debug: program.debug
+      debug: program.debug,
+      allowMentions: true
     }
   )
 
