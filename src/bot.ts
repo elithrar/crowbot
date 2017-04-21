@@ -245,7 +245,7 @@ export interface Command {
   name: string
   aliases: string[]
   description: string
-  action: any
+  action: Action // should be (EventBot, Discord.Message): string - ?
 }
 
 /**

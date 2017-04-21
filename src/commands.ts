@@ -51,10 +51,11 @@ function listEvents(bot: EventBot, message: Discord.Message) {
 
       events.items.forEach((item) => {
         let now = Date.now()
+        let created = message.createdAt.toString()
 
         if (now <= Date.parse(item.end.dateTime)) {
-          let start = convertEventDate(item.start.dateTime, message.createdAt)
-          let end = convertEventDate(item.end.dateTime, message.createdAt)
+          let start = convertEventDate(item.start.dateTime, created)
+          let end = convertEventDate(item.end.dateTime, created)
 
           if (now >= Date.parse(item.start.dateTime)) {
             // Highlight currently running events.
@@ -105,22 +106,23 @@ My source code lives here: \`https://github.com/elithrar/crowbot\` (ask there fo
 }
 
 /**
- *  convertEventDate pretty-prints a JavaScript date object, and converts it to the target date's timezone
- *
- * @param {Date} date - the Date to be converted.
- * @param {Date} target - the target date (to be used for its timezone)
+ * convertEventDate pretty-prints a JavaScript date object, and converts it to the target date's timezone
+ * @export
+ * @param {string} date - the Date to be converted.
+ * @param {string} target - the target date (to be used for its timezone)
  * @returns {string} formatted - the formatted date.
  */
-function convertEventDate(date: Date, target: Date) {
-  if (!moment(date).isValid()) {
-    throw new Error(`invalid event Date '${date}'`)
+export function convertEventDate(eventDate: string, target: string) {
+  if (!moment(eventDate).isValid()) {
+    throw new Error(`invalid event Date '${eventDate}'`)
   }
 
   if (!moment(target).isValid()) {
     throw new Error(`invalid user Date '${target}'`)
   }
 
-  let targetOffset = moment(target).utcOffset()
-  let converted = moment(date).add(targetOffset, "m").format("ddd MMM Do, h:mmA (Z)")
-  return converted
+  let offset = moment.parseZone(target).utcOffset()
+  let local = moment(eventDate).utcOffset(offset).format("ddd MMM Do, h:mmA (Z)")
+
+  return local
 }
