@@ -242,10 +242,28 @@ export interface BotConfig {
  * @interface Command
  */
 export interface Command {
-  name: string
-  aliases: string[]
-  description: string
   action: Action // should be (EventBot, Discord.Message): string - ?
+  aliases?: string[]
+  args?: string[]
+  description: string
+  name: string
+}
+
+function buildCommands(commands: Command[]): Map<string, Command> {
+  let map = new Map<string, Command>()
+
+  // Build a Map of all commands and their aliases (if any).
+  commands.forEach((command) => {
+    map.set(command.name, command)
+
+    if (command.aliases) {
+      command.aliases.forEach((alias) => {
+        map.set(alias, command)
+      })
+    }
+  })
+
+  return map
 }
 
 /**
