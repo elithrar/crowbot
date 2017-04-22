@@ -1,41 +1,21 @@
+import { Command, EventBot } from "./bot"
+import * as Discord from "discord.js"
 import * as moment from "moment"
-import { EventBot } from "./bot"
-import *  as Discord from "discord.js"
-import { ActionMap, Action } from "./bot"
 
-// actions represent a chat command (e.g. !command), a description, and an
-// Action. An Action is responsible for replying to the message (if
-// applicable), handling errors and should not return anything.
-export let actions: ActionMap = new Map<string, { "description": string, "action": Action }>()
-
-actions.set(
-  "playtests",
+export let commands: Command[] = [
   {
+    name: "playtests",
     description: "Returns the current & upcoming Crowfall playtest schedule",
+    aliases: ["pt"],
     action: listEvents
-  }
-)
-
-actions.set(
-  "help",
+  },
   {
-    description: "Shows the help text",
-    action: showHelpText,
-  }
-)
-
-/**
- *  sendMessage sends the given text to the current channel.
- *
- * @param {Discord.Message} message
- * @param {string} payload
- */
-function sendMessage(message: Discord.Message, text: string) {
-  message.channel.sendMessage(text, { split: true })
-    .catch((err) => {
-      console.error(`error: failed to send message: ${err}`)
-    })
-}
+    name: "help",
+    description: "Show the help text and all available commands.",
+    aliases: ["?"],
+    action: showHelpText
+  },
+]
 
 /* Action functions */
 
@@ -59,9 +39,9 @@ function listEvents(bot: EventBot, message: Discord.Message) {
 
           if (now >= Date.parse(item.start.dateTime)) {
             // Highlight currently running events.
-            results.push(`⚡️ ${start} until ${end} • ${item.summary}`)
+            results.push(`⚡️ ${start} until ${end} ‚Ä¢ ${item.summary}`)
           } else {
-            results.push(`${start} until ${end} • ${item.summary}`)
+            results.push(`${start} until ${end} ‚Ä¢ ${item.summary}`)
           }
         }
       })
@@ -70,11 +50,11 @@ function listEvents(bot: EventBot, message: Discord.Message) {
     })
     .then((results) => {
       if (results.length < 1) {
-        sendMessage(message, "🚫 no Crowfall playtests are currently running or scheduled.")
+        sendMessage(message,  "🚫 no Crowfall playtests are currently running or scheduled.")
         return
       }
 
-      sendMessage(message, `🗓️ Crowfall playtests: ${results.join("\n")}`)
+      sendMessage(message, `🗓 Crowfall playtests: ${results.join("\n")}`)
     })
     .catch(err => {
       console.error(`error: failed to send message: ${err} (guild: ${message.guild.id})`)
@@ -90,8 +70,8 @@ function listEvents(bot: EventBot, message: Discord.Message) {
 function showHelpText(bot: EventBot, message: Discord.Message) {
   let cmds: string[] = []
 
-  actions.forEach((value, key) => {
-    cmds.push(`**${key}**: ${value.description}`)
+  commands.forEach((command) => {
+    cmds.push(`**${command.name}**: (aka: ${command.aliases}) ${command.description}`)
   })
 
   let resp = `
@@ -125,4 +105,17 @@ export function convertEventDate(eventDate: string, target: string) {
   let local = moment(eventDate).utcOffset(offset).format("ddd MMM Do, h:mmA (Z)")
 
   return local
+}
+
+/**
+ *  sendMessage sends the given text to the current channel.
+ *
+ * @param {Discord.Message} message
+ * @param {string} payload
+ */
+function sendMessage(message: Discord.Message, text: string) {
+  message.channel.sendMessage(text, { split: true })
+    .catch((err) => {
+      console.error(`error: failed to send message: ${err}`)
+    })
 }

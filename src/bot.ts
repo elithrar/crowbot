@@ -9,7 +9,7 @@ global.Promise = Bluebird
  *  EventBot provides a Google Calendar fetching Discord bot.
  */
 export class EventBot {
-  actions: ActionMap
+  commands: CommandMap
   /**
    * botPrefix defines what command botPrefix will be used to call the bot (e.g. !botPrefix).
    * @type {string}
@@ -30,7 +30,15 @@ export class EventBot {
     events: []
   }
 
-  constructor(botPrefix: string, actions: ActionMap, config: BotConfig) {
+  /**
+   * Creates an instance of EventBot.
+   * @param {string} botPrefix 
+   * @param {Command[]} commands 
+   * @param {BotConfig} config 
+   * 
+   * @memberOf EventBot
+   */
+  constructor(botPrefix: string, commands: Command[], config: BotConfig) {
     this.config = config
 
     if (this.config.token === "") {
@@ -56,7 +64,7 @@ export class EventBot {
       this.client.options = this.config.clientOptions
     }
 
-    this.actions = actions
+    this.commands = this.buildCommands(commands)
 
     // Defaults
     this.daysAhead = 30
@@ -114,6 +122,23 @@ export class EventBot {
     return await this.client.destroy()
   }
 
+  buildCommands(commands: Command[]): Map<string, Command> {
+    let map = new Map<string, Command>()
+
+    // Build a Map of all commands and their aliases (if any).
+    commands.forEach((command) => {
+      map.set(command.name, command)
+
+      if (command.aliases) {
+        command.aliases.forEach((alias) => {
+          map.set(alias, command)
+        })
+      }
+    })
+
+    return map
+  }
+
   /**
    * hasBotPrefix returns true if the message has the bots' prefix.
    * @param {Discord.Message} message
@@ -148,7 +173,7 @@ export class EventBot {
 
       // TODO(matt): Consider refactoring the Action interface used here; build
       // it from an object to support aliases.
-      let action = this.actions.get(command)
+      let action = this.commands.get(command)
       if (action) {
         action.action(this, message)
       }
@@ -242,44 +267,48 @@ export interface BotConfig {
  * @interface Command
  */
 export interface Command {
+  /**
+   * action is the function to execute for that command.
+   * @type {Action}
+   * @memberOf Command
+   */
   action: Action // should be (EventBot, Discord.Message): string - ?
+  /**
+   * aliases for the command.
+   * @type {string[]}
+   * @memberOf Command
+   */
   aliases?: string[]
+  /**
+   * optional arguments for the command - e.g !prefix <command> <args>
+   * @type {string[]}
+   * @memberOf Command
+   */
   args?: string[]
+  /**
+   * The human-readable description of the command.
+   * @type {string}
+   * @memberOf Command
+   */
   description: string
+  /**
+   * The name of the command (what it will be executed by).
+   * @type {string}
+   * @memberOf Command
+   */
   name: string
 }
 
-function buildCommands(commands: Command[]): Map<string, Command> {
-  let map = new Map<string, Command>()
-
-  // Build a Map of all commands and their aliases (if any).
-  commands.forEach((command) => {
-    map.set(command.name, command)
-
-    if (command.aliases) {
-      command.aliases.forEach((alias) => {
-        map.set(alias, command)
-      })
-    }
-  })
-
-  return map
-}
-
-/**
- * ActionMap is a mapping of chat commands to their respective description and Action (callback).
- *
- * @export
- */
-export type ActionMap = Map<string, { "description": string, "action": Action }>
+export type CommandMap = Map<string, Command>
 
 /**
  * Action represents the callback ("action") tied to a chat command. It
  * accepts an instance of EventBot and a Discord.Message object.
- *
  * @export
  * @interface Action
  */
 export interface Action {
   (bot: EventBot, message: Discord.Message): void
 }
+
+

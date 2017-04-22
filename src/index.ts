@@ -15,7 +15,7 @@ function main() {
 
   let eventBot = new EventBot(
     "crowbot",
-    commands.actions,
+    commands.commands,
     {
       token: program.botToken,
       clientID: program.clientId,

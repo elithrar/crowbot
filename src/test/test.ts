@@ -2,8 +2,8 @@ import "mocha"
 import * as assert from "assert"
 import * as Discord from "discord.js"
 import * as moment from "moment"
-import { EventBot, BotConfig, ActionMap } from "../bot"
-import { actions, convertEventDate } from "../commands"
+import { EventBot, BotConfig, CommandMap } from "../bot"
+import { commands, convertEventDate } from "../commands"
 
 describe("sanity check", () => {
   it("should pass", () => {
@@ -20,10 +20,10 @@ describe("create a new BotConfig", () => {
 describe("create a new EventBot", () => {
   it("should instantiate an EventBot with the correct properties", () => {
     let config: BotConfig = {token: "a", googleAPIKey: "b", clientID: "c", calendarID: "d"}
-    let eb = new EventBot("testBot", actions, config)
+    let eb = new EventBot("testBot", commands, config)
 
     assert.equal(eb.botPrefix, "!testBot")
-    assert.equal(eb.actions, actions)
+    assert.equal(eb.commands, commands)
     assert.equal(eb.config, config)
   })
 })
