@@ -62,7 +62,7 @@ function listEvents(bot: EventBot, message: Discord.Message) {
             // Highlight currently running events.
             results.push(`**Currently running**: ${start} until ${end} • ${item.summary}`)
           } else {
-            results.push(`${start} until ${end} • ${item.summary}`)
+            results.push(`**Upcoming**: ${start} until ${end} • ${item.summary}`)
           }
         }
       })
