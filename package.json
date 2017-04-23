@@ -1,14 +1,15 @@
 {
     "name": "crowbot",
-    "version": "1.0.0",
+    "version": "1.0.6",
     "description": "A Discord bot that returns the current & upcoming Crowfall playtest dates.",
-    "main": "src/index.js",
+    "main": "./build/index.js",
+    "types": "./build/index.d.ts",
     "repository": "https://github.com/elithrar/crowcal.js",
     "author": "Matt Silverlock",
     "license": "BSD-3-Clause",
     "scripts": {
         "postinstall": "yarn build",
-        "build": "NPM_CONFIG_PRODUCTION=false node_modules/typescript/bin/tsc",
+        "build": "NPM_CONFIG_PRODUCTION=false tsc",
         "reload": "yarn build && yarn start",
         "watch": "reflex -g 'src/*.ts' -s yarn reload",
         "test": "mocha -r ts-node/register src/test/*.ts",

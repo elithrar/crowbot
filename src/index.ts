@@ -40,6 +40,4 @@ function main() {
 
 if (require.main === module) {
   main()
-} else {
-  console.error("use yarn start || npm start - don't import this bot directly")
 }
