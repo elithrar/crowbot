@@ -52,7 +52,7 @@ function listEvents(bot: EventBot, message: Discord.Message) {
       events.items.forEach((item) => {
         let now = Date.now()
         let created = message.createdAt
-        let offset = -480
+        let offset = -300
 
         if (now <= Date.parse(item.end.dateTime)) {
           let start = humanizeDate(item.start.dateTime, offset)
