@@ -5,20 +5,19 @@
 Commands:
 
 * `!crowfall playtests` - Returns the current & upcoming Crowfall playtest schedule.
-* `!crowfall playtest now` - is there a playtest running now?
 * `!crowfall help` - Shows the help text.
-
-**[Add Crowbot to your Discord server(s)](https://discordapp.com/oauth2/authorize?client_id=301018179373760512&permissions=19456&scope=bot)**
 
 Feature additions and/or suggestions are welcome. If ArtCraft offer an API for account and/or game data, crowbot will be extended to hook into these.
 
 ## Use on your Discord channel
 
+**[Add Crowbot to your Discord server(s)](https://discordapp.com/oauth2/authorize?client_id=301018179373760512&permissions=19456&scope=bot)**
+
 Crowbot will show up in the members list as a "bot" and will respond commands it is aware of. You can add it to multiple servers (as long as you are an admin) and change which channels it is a member of via the Discord UI.
 
 ## Demo Time
 
-![crowbot in action](crowbot-demo.gif)
+![crowbot in action](https://github.com/elithrar/crowbot/blob/master/crowbot-demo.gif)
 
 ## Optional: Deploy to Heroku or Zeit Now
 
