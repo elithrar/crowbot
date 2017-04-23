@@ -144,7 +144,7 @@ export class EventBot {
     if ((this.isBotMentioned(message) && this.config.allowMentions) || this.hasBotPrefix(message)) {
       let command = message.content.replace(`${this.botPrefix} `, "")
       command = command.replace(/^<@\d+> /, "")
-      console.log(`received command: ${command} (guild: ${message.guild.id})`)
+      console.log(`received command: ${command} (channel: ${message.channel.id})`)
 
       // TODO(matt): Consider refactoring the Action interface used here; build
       // it from an object to support aliases.
