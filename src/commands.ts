@@ -51,15 +51,16 @@ function listEvents(bot: EventBot, message: Discord.Message) {
 
       events.items.forEach((item) => {
         let now = Date.now()
-        let created = message.createdAt.toString()
+        let created = message.createdAt
+        let offset = -480
 
         if (now <= Date.parse(item.end.dateTime)) {
-          let start = convertEventDate(item.start.dateTime, created)
-          let end = convertEventDate(item.end.dateTime, created)
+          let start = humanizeDate(item.start.dateTime, offset)
+          let end = humanizeDate(item.end.dateTime, offset)
 
           if (now >= Date.parse(item.start.dateTime)) {
             // Highlight currently running events.
-            results.push(`⚡️ ${start} until ${end} • ${item.summary}`)
+            results.push(`**Currently running**: ${start} until ${end} • ${item.summary}`)
           } else {
             results.push(`${start} until ${end} • ${item.summary}`)
           }
@@ -106,23 +107,16 @@ My source code lives here: \`https://github.com/elithrar/crowbot\` (ask there fo
 }
 
 /**
- * convertEventDate pretty-prints a JavaScript date object, and converts it to the target date's timezone
+ * humanizeDate pretty-prints a JavaScript date object.
  * @export
  * @param {string} date - the Date to be converted.
- * @param {string} target - the target date (to be used for its timezone)
+ * @param {offset} number - the offset (in minutes) from UTC to format as.
  * @returns {string} formatted - the formatted date.
  */
-export function convertEventDate(eventDate: string, target: string) {
-  if (!moment(eventDate).isValid()) {
-    throw new Error(`invalid event Date '${eventDate}'`)
+export function humanizeDate(date: Date, offset: number): string {
+  if (!moment(date).isValid()) {
+    throw new Error(`invalid date'${date}'`)
   }
 
-  if (!moment(target).isValid()) {
-    throw new Error(`invalid user Date '${target}'`)
-  }
-
-  let offset = moment.parseZone(target).utcOffset()
-  let local = moment(eventDate).utcOffset(offset).format("ddd MMM Do, h:mmA (Z)")
-
-  return local
+  return moment(date).utcOffset(offset).format("ddd MMM Do, h:mmA (Z)")
 }

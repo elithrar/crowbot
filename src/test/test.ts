@@ -3,7 +3,7 @@ import * as assert from "assert"
 import * as Discord from "discord.js"
 import * as moment from "moment"
 import { EventBot, BotConfig, ActionMap } from "../bot"
-import { actions, convertEventDate } from "../commands"
+import { actions, humanizeDate } from "../commands"
 
 describe("sanity check", () => {
   it("should pass", () => {
@@ -19,7 +19,7 @@ describe("create a new BotConfig", () => {
 
 describe("create a new EventBot", () => {
   it("should instantiate an EventBot with the correct properties", () => {
-    let config: BotConfig = {token: "a", googleAPIKey: "b", clientID: "c", calendarID: "d"}
+    let config: BotConfig = { token: "a", googleAPIKey: "b", clientID: "c", calendarID: "d" }
     let eb = new EventBot("testBot", actions, config)
 
     assert.equal(eb.botPrefix, "!testBot")
@@ -28,14 +28,17 @@ describe("create a new EventBot", () => {
   })
 })
 
-describe("convert timestamps to the user's timezone", () => {
-  it("should convert timezones to the correct UTC offset", () => {
-    let from = "2017-04-03T22:30:00-05:00"
-    let target = "2017-04-20T12:21:00+01:00"
+describe("humanize event dates", () => {
+  it("should humanize event dates and set the UTC offset", () => {
+    let tests: { from: Date, offset: number, expects: string }[] = [
+      { from: new Date("2017-04-03T22:30:00-07:00"), offset: -300, expects: "Tue Apr 4th, 12:30AM (-05:00)" },
+      { from: new Date("2017-04-20T12:00:00-00:00"), offset: 480, expects: "Thu Apr 20th, 8:00PM (+08:00)" },
+      { from: new Date("2017-04-20T12:00:00-05:00"), offset: 0, expects: "Thu Apr 20th, 5:00PM (+00:00)" },
+    ]
 
-    let local = convertEventDate(from, target)
-
-    assert.equal(local, "Tue Apr 4th, 4:30AM (+01:00)", "timestamps do not match")
+    tests.forEach((test) => {
+      assert.equal(humanizeDate(test.from, test.offset), test.expects, "invalid date")
+    })
   })
 })
 
