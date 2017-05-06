@@ -1,7 +1,7 @@
 import * as moment from "moment"
-import { EventBot } from "./bot"
+import { EventBot } from "./EventBot"
 import *  as Discord from "discord.js"
-import { ActionMap, Action } from "./bot"
+import { ActionMap, Action } from "./EventBot"
 
 // actions represent a chat command (e.g. !command), a description, and an
 // Action. An Action is responsible for replying to the message (if
@@ -25,13 +25,13 @@ actions.set(
 )
 
 /**
- *  sendMessage sends the given text to the current channel.
+ * send sends the given text to the current channel.
  *
  * @param {Discord.Message} message
  * @param {string} payload
  */
-function sendMessage(message: Discord.Message, text: string) {
-  message.channel.sendMessage(text, { split: true })
+function send(message: Discord.Message, text: string) {
+  message.channel.send(text, { split: true })
     .catch((err) => {
       console.error(`error: failed to send message: ${err}`)
     })
@@ -71,11 +71,11 @@ function listEvents(bot: EventBot, message: Discord.Message) {
     })
     .then((results) => {
       if (results.length < 1) {
-        sendMessage(message, "🚫 no Crowfall playtests are currently running or scheduled.")
+        send(message, "🚫 no Crowfall playtests are currently running or scheduled.")
         return
       }
 
-      sendMessage(message, `🗓️ Crowfall playtests: ${results.join("\n")}`)
+      send(message, `🗓️ Crowfall playtests: ${results.join("\n")}`)
     })
     .catch(err => {
       console.error(`error: failed to send message: ${err} (guild: ${message.guild.id})`)
@@ -103,7 +103,7 @@ Available commands:\n\n${cmds.join("\n")}
 My source code lives here: \`https://github.com/elithrar/crowbot\` (ask there for help or feature requests)
 `
 
-  sendMessage(message, resp)
+  send(message, resp)
 }
 
 /**

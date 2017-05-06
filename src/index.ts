@@ -1,7 +1,7 @@
 import * as Discord from "discord.js"
 import * as program from "commander"
-import * as commands from "./commands"
-import { EventBot } from "./bot"
+import * as commands from "./Commands"
+import { EventBot } from "./EventBot"
 
 function main() {
   program
