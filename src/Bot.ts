@@ -5,6 +5,7 @@ export class Bot {
   prefix: string
   commands: CommandMap
   config: BotConfig
+  permissions: Discord.PermissionResolvable[]
 
   constructor(prefix: string, config: BotConfig, commands: Command[]) {
     this.config = config

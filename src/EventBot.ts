@@ -1,9 +1,6 @@
 import * as Discord from "discord.js"
 import * as moment from "moment"
-import * as rp from "request-promise"
-import * as Bluebird from "bluebird"
-
-global.Promise = Bluebird
+import axios from "axios"
 
 /**
  *  EventBot provides a Google Calendar fetching Discord bot.
@@ -182,35 +179,31 @@ export class EventBot {
     return url
   }
 
-  getEvents(url: string, options: any): Bluebird<any> {
+  async getEvents(url: string, options: any): Promise<any> {
     let maxAge = 600
     let now = Date.now()
     let cache = this.cache
 
     // Return events from the cache when possible.
     if (now - maxAge < cache.lastFetched || cache.events.length !== 0) {
-      return new Bluebird((resolve) => {
+      return new Promise((resolve) => {
         resolve(cache.events)
       })
     }
 
-    return rp.get({
-      uri: url,
-      json: true
-    })
-      .then(body => {
-        if (body.items === undefined) {
-          throw new Error("event data not present in response")
-        }
+    try {
+      let resp = await axios.get(url)
+      if (resp.data.items === undefined) {
+        throw new Error("event data not present in response")
+      }
 
-        cache.lastFetched = now
-        cache.events = body
+      cache.lastFetched = now
+      cache.events = resp.data
 
-        return body
-      })
-      .catch((err) => {
-        console.log(`error fetching events: ${err}`)
-      })
+      return resp.data
+    } catch (e) {
+      console.log(`error fetching events: ${e}`)
+    }
   }
 }
 
