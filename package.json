@@ -33,11 +33,11 @@
     "devDependencies": {
         "@types/bluebird-global": "^3.5.2",
         "@types/mocha": "^2.2.40",
-        "@types/node": "^7.0.16",
+        "@types/node": "^7.0.18",
         "@types/request-promise": "^4.1.33",
         "mocha": "^3.3.0",
         "nodemon": "^1.11.0",
-        "ts-node": "^3.0.3",
+        "ts-node": "^3.0.4",
         "tslint": "^5.2.0"
     },
     "peerDependencies": {
