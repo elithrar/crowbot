@@ -33,14 +33,14 @@ export class Bot {
   }
 
   start(): Promise<string> {
-    this.bot.on("ready", () => {
-      this.generateInvite()
-        .then((link) => {
-          console.log(`🔗 add ${this.prefix} to your Discord server: ${link}`)
-          console.log(`🤖 ${this.prefix} is ready for battle.`)
-        }).catch((err) => {
-          console.log(`${this.prefix} encounted an error when starting: ${err}`)
-        })
+    this.bot.on("ready", async () => {
+      try {
+        let link = await this.generateInvite()
+        console.log(`🔗 add ${this.prefix} to your Discord server: ${link}`)
+        console.log(`🤖 ${this.prefix} is ready for battle.`)
+      } catch (e) {
+        console.log(`${this.prefix} encounted an error when starting: ${e}`)
+      }
     })
       .on("reconnecting", () => {
         console.log(`${this.prefix} is reconnecting...`)
@@ -48,11 +48,11 @@ export class Bot {
       .on("warning", (warning: string) => {
         console.warn(`warning: ${warning}`)
       })
-      .on("error", (err) => {
+      .on("error", (err: Error) => {
         console.error(`error: ${err}`)
       })
       // Parse incoming messages for our command botPrefix and execute their actions.
-      .on("message", message => {
+      .on("message", (message: Discord.Message) => {
         if (this.config.debug) {
           console.log(`debug: received message: ${message.content}`)
         }
