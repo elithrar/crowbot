@@ -2,7 +2,7 @@ import "mocha"
 import * as assert from "assert"
 import * as Discord from "discord.js"
 import * as moment from "moment"
-import { EventBot, BotConfig, ActionMap } from "../bot"
+import { EventBot, BotConfig, ActionMap } from "../EventBot"
 import { actions, humanizeDate } from "../commands"
 
 describe("sanity check", () => {

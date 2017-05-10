@@ -80,7 +80,7 @@ export class EventBot {
       .on("reconnecting", () => {
         console.log(`${this.botPrefix} is reconnecting...`)
       })
-      .on("warning", (warning) => {
+      .on("warning", (warning: string) => {
         console.warn(`warning: ${warning}`)
       })
       .on("error", (err) => {

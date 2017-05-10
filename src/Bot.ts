@@ -45,7 +45,7 @@ export class Bot {
       .on("reconnecting", () => {
         console.log(`${this.prefix} is reconnecting...`)
       })
-      .on("warning", (warning) => {
+      .on("warning", (warning: string) => {
         console.warn(`warning: ${warning}`)
       })
       .on("error", (err) => {

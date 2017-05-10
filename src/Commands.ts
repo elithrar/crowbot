@@ -49,7 +49,7 @@ function listEvents(bot: EventBot, message: Discord.Message) {
     .then((events) => {
       let results = ["\n"]
 
-      events.items.forEach((item) => {
+      events.items.forEach((item: any) => {
         let now = Date.now()
         let created = message.createdAt
         let offset = -300
